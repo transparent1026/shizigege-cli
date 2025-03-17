@@ -61,7 +61,6 @@ export const getNpmInfo = async (name: string) => {
 
 export const getNpmLatestVersion = async (name: string) => {
   const { data } = (await getNpmInfo(name)) as AxiosResponse;
-  console.log(data, "data的值");
   return data["dist-tags"].latest;
 };
 
@@ -86,8 +85,6 @@ export const checkVersion = async (name: string, version: string) => {
 
 // 创建函数
 export async function create(projectName?: string) {
-  console.log(projectName);
-
   // 初始化模板列表
   const tempalteList = Array.from(templates).map((item) => {
     const [name, info] = item;
@@ -120,7 +117,6 @@ export async function create(projectName?: string) {
   });
 
   const info = templates.get(tempalteName);
-  console.log(info);
   // 获取到选择模板进行克隆
   if (info) {
     clone(info.downloadUrl, projectName, ["-b", info.branch]);

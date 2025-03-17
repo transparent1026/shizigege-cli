@@ -1,4 +1,3 @@
-console.log("Hello world!")
 import { Command } from "commander";
 import { version } from "../package.json";
 import { create } from "./command/create";
