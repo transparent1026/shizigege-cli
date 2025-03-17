@@ -1,6 +1,6 @@
 {
   "name": "shizigege-cli",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "shizigege-cli 脚手架",
   "main": "index.js",
   "scripts": {
