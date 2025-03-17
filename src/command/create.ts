@@ -2,6 +2,10 @@ import path from "path";
 import fs from "fs-extra";
 import { input, select } from "@inquirer/prompts";
 import { clone } from "../utils/clone";
+import { name, version } from "../../package.json";
+import axios, { AxiosResponse } from "axios";
+import { gt } from "lodash";
+import chalk from "chalk";
 interface TemplateInfo {
   name: string; // 模板名称
   downloadUrl: string; // 模板下载地址
@@ -43,6 +47,43 @@ export function isOverwrite(fileName: string) {
   });
 }
 
+// 注意这里必须换成npm镜像
+export const getNpmInfo = async (name: string) => {
+  const npmUrl = `https://registry.npmjs.org/${name}`;
+  let res = {};
+  try {
+    res = await axios.get(npmUrl);
+  } catch (error) {
+    console.error(error);
+  }
+  return res;
+};
+
+export const getNpmLatestVersion = async (name: string) => {
+  const { data } = (await getNpmInfo(name)) as AxiosResponse;
+  console.log(data, "data的值");
+  return data["dist-tags"].latest;
+};
+
+export const checkVersion = async (name: string, version: string) => {
+  // 获取远端最新版本
+  const latestVersion = await getNpmLatestVersion(name);
+  // 判断当前版本是否大于远端版本号
+  const need = gt(latestVersion, version);
+  if (need) {
+    console.warn(
+      `检查到dawei最新版本： ${chalk.blackBright(
+        latestVersion
+      )}，当前版本是：${chalk.blackBright(version)}`
+    );
+    console.log(
+      `可使用： ${chalk.yellow(
+        "npm install shizigege-cli@latest"
+      )}，或者使用：${chalk.yellow("shizigege update")}更新`
+    );
+  }
+};
+
 // 创建函数
 export async function create(projectName?: string) {
   console.log(projectName);
@@ -72,6 +113,7 @@ export async function create(projectName?: string) {
     }
   }
 
+  await checkVersion(name, version);
   const tempalteName = await select({
     message: "请选择模板",
     choices: tempalteList,
