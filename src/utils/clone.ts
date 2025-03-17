@@ -2,7 +2,7 @@ import simpleGit, { SimpleGit, SimpleGitOptions } from "simple-git";
 import createLogger from "progress-estimator";
 import chalk from "chalk";
 import log from "./log";
-const figlet = require('figlet');
+// import figlet from "figlet";
 // 初始化进度条
 const logger = createLogger({
   spinner: {
@@ -21,10 +21,10 @@ const gitOptions: Partial<SimpleGitOptions> = {
   maxConcurrentProcesses: 6, // 最大并发进程数
 };
 
-const goodPrinter = async () => {
-  const data = await figlet("shizigege");
-  console.log(chalk.rgb(40, 156, 193).visible(data));
-};
+// const goodPrinter = async () => {
+//   const data = await figlet("shizigege");
+//   console.log(chalk.rgb(40, 156, 193).visible(data));
+// };
 
 export const clone = async (
   url: string,
@@ -37,7 +37,7 @@ export const clone = async (
       estimate: 7000, // 预计下载时间
     });
 
-    goodPrinter();
+    // goodPrinter();
     console.log();
     console.log(chalk.blueBright(`==================================`));
     console.log(chalk.blueBright(`=== 欢迎使用 shizigege-cli 脚手架 ===`));
